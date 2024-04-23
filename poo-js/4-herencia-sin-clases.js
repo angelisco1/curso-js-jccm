@@ -4,11 +4,9 @@ function Persona(nombre, apellidos) {
 }
 
 const sara = new Persona('Sara', 'Collins')
-const mike = new Persona('Mike', 'Kozinsky')
 
 Persona.prototype.getNombreCompleto = function () {
-  return `${this.getNombre()} ${this.getApellidos()}`
-  // return `${this.nombre} ${this.apellidos}`
+  return `${this.nombre} ${this.apellidos}`
 }
 
 
@@ -18,12 +16,20 @@ function Alumno(nombre, apellidos, curso) {
   this.curso = curso
 }
 
+Alumno.prototype = Object.create(Persona.prototype)
+Alumno.prototype.constructor = Alumno
 
+Alumno.prototype.getCurso = function () {
+  return this.curso
+}
+
+const mike = new Alumno('Mike', 'Kozinsky', 'JavaScript')
 
 console.log(sara)
 console.log(mike)
 
 console.log(sara.getNombreCompleto())
+console.log(mike.getNombreCompleto())
 
 sara.getDNI = function () {
   return '12341234A'

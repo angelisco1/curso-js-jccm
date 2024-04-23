@@ -32,8 +32,24 @@ class Persona {
 
 }
 
+class Alumno extends Persona {
+
+  constructor(nombre, apellidos, curso) {
+    super(nombre, apellidos)
+    this._curso = curso
+  }
+
+  get curso() {
+    return this._curso
+  }
+
+  set curso(curso) {
+    this._curso = curso
+  }
+}
+
 const sara = new Persona('Sara', 'Collins')
-const mike = new Persona('Mike', 'Kozinsky')
+const mike = new Alumno('Mike', 'Kozinsky')
 
 console.log(sara)
 console.log(mike)
