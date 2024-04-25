@@ -3,7 +3,9 @@
 // Cada una de ellas tiene que tener un precio
 // Tiene que haber alguna función para calcular el precio total de la estancia en el hotel
 
-abstract class HabitacionHotel {
+import { Disponibilidad } from "./disponibilidad.mixin"
+
+abstract class HabitacionHotel implements Disponibilidad {
   public estaDisponible: boolean = true
 
   constructor(
@@ -18,7 +20,20 @@ abstract class HabitacionHotel {
     const totalDias = (fechaFin.getTime() - fechaInicio.getTime()) / (1000 * 60 * 60 * 24)
     return totalDias * precio
   }
+
+  cambiarDisponibilidad(estaDisponible: boolean): void { }
+
 }
+
+function applyMixins(derivedConst, baseConst) {
+  baseConst.forEach(baseConst => {
+    Object.getOwnPropertyNames(baseConst.prototype).forEach(propName => {
+      derivedConst.prototype[propName] = baseConst.prototype[propName]
+    })
+  })
+}
+
+applyMixins(HabitacionHotel, [Disponibilidad])
 
 class HabitacionSimple extends HabitacionHotel {
   private precio: number = 25
@@ -73,3 +88,8 @@ const habSuite = new HabitacionSuite('2', 502)
 
 console.log(habSimple.calcularPrecioEstancia(fecha1, fecha2))
 console.log(habSuite.calcularPrecioEstancia(fecha1, fecha2))
+
+habSuite.cambiarDisponibilidad(true)
+console.log(habSuite)
+habSuite.cambiarDisponibilidad(false)
+console.log(habSuite)
