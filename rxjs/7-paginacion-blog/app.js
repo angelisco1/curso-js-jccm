@@ -1,4 +1,4 @@
-const { from, of, take, skip, toArray, Subject, BehaviourSubject } = rxjs
+const { from, of, take, skip, toArray, Subject, BehaviorSubject, switchMap, fromEvent } = rxjs
 
 const noticias = [
   'Noticia 1',
@@ -21,7 +21,7 @@ const noticias = [
 // const pagina = 2
 const noticiasPorPagina = 5
 
-const pagina$ = new BehaviourSubject(1)
+const pagina$ = new BehaviorSubject(1)
 
 
 
@@ -36,6 +36,16 @@ const getNoticias = (pagina) => {
 
 // const noticias$ = getNoticias()
 
+// pagina$.subscribe((paginaActual) => {
+//   getNoticias(paginaActual)
+//     .subscribe((noticiasEnPagina) => {
+//       console.log(noticiasEnPagina)
+//       const listaNoticias = noticiasEnPagina.map(n => `<li>${n}</li>`).join('')
+//       document.getElementById('listaNoticias').innerHTML = listaNoticias
+//     })
+// })
+
+
 pagina$
   .pipe(
     switchMap((paginaActual) => {
@@ -48,6 +58,26 @@ pagina$
     document.getElementById('listaNoticias').innerHTML = listaNoticias
   })
 
+
+fromEvent(document.getElementById('btnNext'), 'click')
+  .subscribe(() => {
+    if (pagina$.value * noticiasPorPagina >= noticias.length) {
+      console.error('No hay más páginas')
+      return
+    }
+
+    pagina$.next(pagina$.value + 1)
+  })
+
+fromEvent(document.getElementById('btnPrev'), 'click')
+  .subscribe(() => {
+    if (pagina$.value === 1) {
+      console.error('No hay más páginas')
+      return
+    }
+
+    pagina$.next(pagina$.value - 1)
+  })
 
 
 // pagina$
@@ -62,9 +92,6 @@ pagina$
 
 
 //   })
-
-
-
 
 
 // of('Noticia 1', 'Noticia 2')

@@ -1,0 +1,7 @@
+<h1>Lista pokemons</h1>
+
+<app-pokemon [pokemon]="pokemon"></app-pokemon>
+
+@for (pokemon of pokemons; track $index) {
+<app-pokemon [pokemon]="pokemon"></app-pokemon>
+}
